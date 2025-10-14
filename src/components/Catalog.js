@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const Catalog = () => {
+  const [selectedCategory, setSelectedCategory] = useState("Все");
+
   const services = [
     {
       id: 1,
@@ -60,6 +62,11 @@ const Catalog = () => {
 
   const categories = ["Все", "Котики", "Попугайчики"];
 
+  // Фильтрация услуг по категории
+  const filteredServices = selectedCategory === "Все" 
+    ? services 
+    : services.filter(service => service.category === selectedCategory);
+
   return (
     <main className="py-5" style={{ minHeight: 'calc(100vh - 200px)' }}>
       <div className="container">
@@ -77,23 +84,32 @@ const Catalog = () => {
         {/* Фильтры по категориям */}
         <div className="row mb-4">
           <div className="col-12">
-            <div className="d-flex flex-wrap justify-content-center gap-2">
+            <div className="d-flex flex-wrap justify-content-center gap-2 mb-3">
               {categories.map((category) => (
                 <button 
                   key={category}
-                  className={`btn ${category === "Все" ? "btn-primary" : "btn-outline-primary"} rounded-pill px-4`}
+                  className={`btn ${category === selectedCategory ? "btn-primary" : "btn-outline-primary"} rounded-pill px-4`}
                   type="button"
+                  onClick={() => setSelectedCategory(category)}
                 >
+                  {category === "Котики" && "🐱 "}
+                  {category === "Попугайчики" && "🦜 "}
                   {category}
                 </button>
               ))}
+            </div>
+            <div className="text-center">
+              <small className="text-muted">
+                Показано услуг: <span className="fw-bold text-primary">{filteredServices.length}</span> из {services.length}
+              </small>
             </div>
           </div>
         </div>
 
         {/* Сетка услуг */}
         <div className="row g-4">
-          {services.map((service) => (
+          {filteredServices.length > 0 ? (
+            filteredServices.map((service) => (
             <div key={service.id} className="col-lg-4 col-md-6">
               <div className="card h-100 shadow-sm border-0 overflow-hidden">
                 {/* Изображение услуги */}
@@ -154,7 +170,16 @@ const Catalog = () => {
                 </div>
               </div>
             </div>
-          ))}
+            ))
+          ) : (
+            <div className="col-12">
+              <div className="text-center py-5">
+                <i className="bi bi-search fs-1 text-muted mb-3 d-block"></i>
+                <h4 className="text-muted">Услуги не найдены</h4>
+                <p className="text-muted">Попробуйте выбрать другую категорию</p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Дополнительная информация */}
