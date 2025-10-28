@@ -2,7 +2,7 @@ import React from 'react';
 
 const Main = () => {
   return (
-    <main className="py-5" style={{ minHeight: 'calc(100vh - 200px)' }}>
+    <main className="py-5">
       <div className="container">
         {/* Hero секция */}
         <div className="row align-items-center mb-5">

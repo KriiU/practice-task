@@ -68,7 +68,7 @@ const Profile = () => {
   };
 
   return (
-    <main className="py-5" style={{ minHeight: 'calc(100vh - 200px)' }}>
+    <main className="py-5">
       <div className="container">
         <div className="row">
           {/* Боковая панель профиля */}

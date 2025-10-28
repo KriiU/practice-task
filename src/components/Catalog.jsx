@@ -68,7 +68,7 @@ const Catalog = () => {
     : services.filter(service => service.category === selectedCategory);
 
   return (
-    <main className="py-5" style={{ minHeight: 'calc(100vh - 200px)' }}>
+    <main className="py-5">
       <div className="container">
         {/* Заголовок секции */}
         <div className="text-center mb-5">
