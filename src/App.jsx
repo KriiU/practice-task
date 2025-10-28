@@ -5,6 +5,7 @@ import Main from './components/Main';
 import Catalog from './components/Catalog';
 import About from './components/About';
 import Cart from './components/Cart';
+import Contact from './components/Contact';
 import Profile from './components/Profile';
 import Footer from './components/Footer';
 
@@ -19,6 +20,7 @@ function App() {
             <Route path="/catalog" element={<Catalog />} />
             <Route path="/about" element={<About />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/profile" element={<Profile />} />
           </Routes>
         </main>

@@ -49,6 +49,13 @@ const Header = () => {
               Корзина
             </Link>
             <Link 
+              to="/contact"
+              className={`btn ${isActive('/contact') ? 'btn-warning' : 'btn-outline-light'} btn-sm`}
+            >
+              <i className="bi bi-envelope me-1"></i>
+              Контакты
+            </Link>
+            <Link 
               to="/profile"
               className={`btn ${isActive('/profile') ? 'btn-warning' : 'btn-outline-light'} btn-sm`}
             >
