@@ -1,15 +1,23 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-const Contact = () => {
+interface FormData {
+  firstName: string;
+  middleName: string;
+  email: string;
+  phone?: string;
+  message?: string;
+}
+
+const Contact: React.FC = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset
-  } = useForm();
+  } = useForm<FormData>();
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: FormData): void => {
     console.log('Данные формы:', data);
     alert('Спасибо за обратную связь! Мы свяжемся с вами в ближайшее время.');
     reset();
@@ -129,7 +137,7 @@ const Contact = () => {
                         placeholder="+7 (999) 123-45-67"
                         {...register('phone', {
                           pattern: {
-                            value: /^[\+]?[0-9\s\-\(\)]{10,}$/,
+                            value: /^[+]?[0-9\s\-()]{10,}$/,
                             message: 'Введите корректный номер телефона'
                           }
                         })}
@@ -143,7 +151,7 @@ const Contact = () => {
                       <textarea
                         id="message"
                         className="form-control form-control-lg"
-                        rows="4"
+                        rows={4}
                         placeholder="Расскажите о ваших пожеланиях или вопросах..."
                         {...register('message')}
                       ></textarea>

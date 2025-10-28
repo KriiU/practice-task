@@ -1,10 +1,13 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useCart } from '../contexts/CartContext';
 
-const Header = () => {
+const Header: React.FC = () => {
   const location = useLocation();
+  const { getTotalItems } = useCart();
+  const totalItems = getTotalItems();
 
-  const isActive = (path) => {
+  const isActive = (path: string): boolean => {
     return location.pathname === path;
   };
 
@@ -13,10 +16,16 @@ const Header = () => {
       <div className="container">
         <div className="d-flex justify-content-between align-items-center">
           {/* Логотип */}
-          <div className="d-flex align-items-center">
+          <Link 
+            to="/" 
+            className="d-flex align-items-center text-decoration-none text-white"
+            style={{ transition: 'opacity 0.3s ease' }}
+            onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+            onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+          >
             <i className="bi bi-heart-fill text-danger fs-3 me-2"></i>
             <h4 className="mb-0 fw-bold">МурЛэнд Спа</h4>
-          </div>
+          </Link>
           
           {/* Навигация */}
           <nav className="d-flex gap-3">
@@ -43,10 +52,15 @@ const Header = () => {
             </Link>
             <Link 
               to="/cart"
-              className={`btn ${isActive('/cart') ? 'btn-warning' : 'btn-outline-light'} btn-sm`}
+              className={`btn ${isActive('/cart') ? 'btn-warning' : 'btn-outline-light'} btn-sm position-relative`}
             >
               <i className="bi bi-cart me-1"></i>
               Корзина
+              {totalItems > 0 && (
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {totalItems}
+                </span>
+              )}
             </Link>
             <Link 
               to="/contact"
@@ -54,6 +68,13 @@ const Header = () => {
             >
               <i className="bi bi-envelope me-1"></i>
               Контакты
+            </Link>
+            <Link 
+              to="/calculator"
+              className={`btn ${isActive('/calculator') ? 'btn-warning' : 'btn-outline-light'} btn-sm`}
+            >
+              <i className="bi bi-calculator me-1"></i>
+              Калькулятор
             </Link>
             <Link 
               to="/profile"

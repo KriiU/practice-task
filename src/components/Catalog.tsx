@@ -1,9 +1,21 @@
 import React, { useState } from 'react';
+import { useCart } from '../contexts/CartContext';
 
-const Catalog = () => {
-  const [selectedCategory, setSelectedCategory] = useState("Все");
+interface Service {
+  id: number;
+  title: string;
+  description: string;
+  price: string;
+  duration: string;
+  image: string;
+  category: string;
+}
 
-  const services = [
+const Catalog: React.FC = () => {
+  const [selectedCategory, setSelectedCategory] = useState<string>("Все");
+  const { addToCart } = useCart();
+
+  const services: Service[] = [
     {
       id: 1,
       title: "Котичий Массаж",
@@ -60,12 +72,37 @@ const Catalog = () => {
     }
   ];
 
-  const categories = ["Все", "Котики", "Попугайчики"];
+  const categories: string[] = ["Все", "Котики", "Попугайчики"];
 
   // Фильтрация услуг по категории
   const filteredServices = selectedCategory === "Все" 
     ? services 
     : services.filter(service => service.category === selectedCategory);
+
+  const handleAddToCart = (service: Service) => {
+    addToCart({
+      id: service.id,
+      title: service.title,
+      price: parseInt(service.price.replace(/\D/g, '')), // Убираем все не-цифры
+      duration: service.duration,
+      image: service.image
+    });
+    
+    // Показываем уведомление
+    const notification = document.createElement('div');
+    notification.className = 'alert alert-success position-fixed';
+    notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    notification.innerHTML = `
+      <i class="bi bi-check-circle me-2"></i>
+      <strong>${service.title}</strong> добавлен в корзину!
+    `;
+    document.body.appendChild(notification);
+    
+    // Убираем уведомление через 3 секунды
+    setTimeout(() => {
+      notification.remove();
+    }, 3000);
+  };
 
   return (
     <main className="py-5">
@@ -119,8 +156,8 @@ const Catalog = () => {
                     alt={service.title}
                     className="card-img-top h-100 w-100"
                     style={{ objectFit: 'cover', transition: 'transform 0.3s ease' }}
-                    onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
-                    onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+                    onMouseEnter={(e) => (e.target as HTMLImageElement).style.transform = 'scale(1.05)'}
+                    onMouseLeave={(e) => (e.target as HTMLImageElement).style.transform = 'scale(1)'}
                   />
                   <div className="position-absolute top-0 end-0 m-3">
                     <span className="badge bg-success bg-opacity-90 px-3 py-2">
@@ -157,9 +194,12 @@ const Catalog = () => {
                     </div>
                     
                     <div className="d-grid gap-2">
-                      <button className="btn btn-primary btn-lg">
-                        <i className="bi bi-calendar-plus me-2"></i>
-                        Забронировать
+                      <button 
+                        className="btn btn-primary btn-lg"
+                        onClick={() => handleAddToCart(service)}
+                      >
+                        <i className="bi bi-cart-plus me-2"></i>
+                        Добавить в корзину
                       </button>
                       <button className="btn btn-outline-secondary">
                         <i className="bi bi-info-circle me-2"></i>

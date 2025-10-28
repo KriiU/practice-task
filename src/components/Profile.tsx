@@ -1,8 +1,29 @@
 import React, { useState } from 'react';
 
-const Profile = () => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [userInfo, setUserInfo] = useState({
+interface UserInfo {
+  name: string;
+  email: string;
+  phone: string;
+  birthDate: string;
+  preferences: {
+    notifications: boolean;
+    newsletter: boolean;
+    sms: boolean;
+  };
+}
+
+interface Booking {
+  id: number;
+  service: string;
+  date: string;
+  time: string;
+  status: string;
+  price: string;
+}
+
+const Profile: React.FC = () => {
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [userInfo, setUserInfo] = useState<UserInfo>({
     name: 'Анна Петрова',
     email: 'anna.petrova@email.com',
     phone: '+7 (999) 123-45-67',
@@ -14,7 +35,7 @@ const Profile = () => {
     }
   });
 
-  const [bookings] = useState([
+  const [bookings] = useState<Booking[]>([
     {
       id: 1,
       service: 'Котичий Массаж',
@@ -41,14 +62,14 @@ const Profile = () => {
     }
   ]);
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = (field: keyof UserInfo, value: string): void => {
     setUserInfo(prev => ({
       ...prev,
       [field]: value
     }));
   };
 
-  const handlePreferenceChange = (preference, value) => {
+  const handlePreferenceChange = (preference: keyof UserInfo['preferences'], value: boolean): void => {
     setUserInfo(prev => ({
       ...prev,
       preferences: {
@@ -58,8 +79,8 @@ const Profile = () => {
     }));
   };
 
-  const getStatusBadge = (status) => {
-    const statusClasses = {
+  const getStatusBadge = (status: string): string => {
+    const statusClasses: { [key: string]: string } = {
       'Подтверждено': 'bg-success',
       'Ожидает подтверждения': 'bg-warning',
       'Завершено': 'bg-secondary'

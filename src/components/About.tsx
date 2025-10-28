@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const About = () => {
+const About: React.FC = () => {
   return (
     <main className="py-5">
       <div className="container">

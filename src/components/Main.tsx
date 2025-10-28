@@ -1,6 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Main = () => {
+const Main: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <main className="py-5">
       <div className="container">
@@ -18,11 +20,17 @@ const Main = () => {
                 душевного равновесия и радости.
               </p>
               <div className="d-flex gap-3">
-                <button className="btn btn-primary btn-lg">
+                <button 
+                  className="btn btn-primary btn-lg"
+                  onClick={() => navigate('/catalog')}
+                >
                   <i className="bi bi-calendar-check me-2"></i>
                   Забронировать
                 </button>
-                <button className="btn btn-outline-primary btn-lg">
+                <button 
+                  className="btn btn-outline-primary btn-lg"
+                  onClick={() => navigate('/about')}
+                >
                   <i className="bi bi-info-circle me-2"></i>
                   Узнать больше
                 </button>

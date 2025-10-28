@@ -1,52 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useCart } from '../contexts/CartContext';
 
-const Cart = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      title: "Котичий Массаж",
-      price: 3500,
-      duration: "60 мин",
-      image: "https://images.unsplash.com/photo-1574158622682-e40e69881006?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
-      quantity: 1,
-      date: "2024-01-15",
-      time: "14:00"
-    },
-    {
-      id: 2,
-      title: "Попугайская Сауна",
-      price: 2800,
-      duration: "45 мин",
-      image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
-      quantity: 1,
-      date: "2024-01-20",
-      time: "16:30"
-    }
-  ]);
-
-  const updateQuantity = (id, newQuantity) => {
-    if (newQuantity <= 0) {
-      removeItem(id);
-      return;
-    }
-    setCartItems(items => 
-      items.map(item => 
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
-
-  const removeItem = (id) => {
-    setCartItems(items => items.filter(item => item.id !== id));
-  };
-
-  const getTotalPrice = () => {
-    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
-  };
-
-  const getTotalItems = () => {
-    return cartItems.reduce((total, item) => total + item.quantity, 0);
-  };
+const Cart: React.FC = () => {
+  const navigate = useNavigate();
+  const { 
+    cartItems, 
+    updateQuantity, 
+    removeFromCart, 
+    getTotalPrice, 
+    getTotalItems, 
+    clearCart 
+  } = useCart();
 
   return (
     <main className="py-5">
@@ -140,7 +105,7 @@ const Cart = () => {
                         <div className="col-md-2">
                           <button 
                             className="btn btn-outline-danger btn-sm"
-                            onClick={() => removeItem(item.id)}
+                            onClick={() => removeFromCart(item.id)}
                           >
                             <i className="bi bi-trash"></i>
                           </button>
@@ -183,10 +148,20 @@ const Cart = () => {
                       <i className="bi bi-credit-card me-2"></i>
                       Оформить заказ
                     </button>
-                    <button className="btn btn-outline-primary">
-                      <i className="bi bi-arrow-left me-2"></i>
-                      Продолжить покупки
-                    </button>
+                      <button 
+                        className="btn btn-outline-primary"
+                        onClick={() => navigate('/catalog')}
+                      >
+                        <i className="bi bi-arrow-left me-2"></i>
+                        Продолжить покупки
+                      </button>
+                      <button 
+                        className="btn btn-outline-danger"
+                        onClick={clearCart}
+                      >
+                        <i className="bi bi-trash me-2"></i>
+                        Очистить корзину
+                      </button>
                   </div>
                 </div>
               </div>
@@ -230,7 +205,10 @@ const Cart = () => {
                 <p className="text-muted mb-4">
                   Добавьте процедуры из каталога, чтобы оформить заказ
                 </p>
-                <button className="btn btn-primary btn-lg">
+                <button 
+                  className="btn btn-primary btn-lg"
+                  onClick={() => navigate('/catalog')}
+                >
                   <i className="bi bi-grid me-2"></i>
                   Перейти в каталог
                 </button>
